@@ -1,4 +1,4 @@
-from CornPrices.classes.CornTypes import SweetCorn
+from CornPrices.classes.CornTypes import SweetCorn, GemCorn
 from CornPrices.classes.Player import Player
 
 
@@ -9,7 +9,8 @@ class CornPricesGame:
         
         # stores a discrete amount of corn instances to represent the economy for each type of corn
         self.corn_markets = {
-            "sweet-corn" : SweetCorn()
+            "sweet-corn" : SweetCorn(),
+            "gem-corn" : GemCorn()
             }
 
     def get_player(self, pid):
@@ -36,6 +37,9 @@ class CornPricesGame:
 
         market = self.corn_markets[corn_tag]
 
+        if market.supply < 3:
+            return "no supply"
+
         try:
             int(amount)
         except ValueError:
@@ -52,7 +56,7 @@ class CornPricesGame:
             increment = 1
             while True:  # bad way of doing this MUST fix later
                 buy_amount += increment
-                if player.money > market.get_transaction_price(buy_amount):
+                if player.money > market.get_transaction_price(buy_amount) and buy_amount < market.supply:
                     increment += 1
                 else:
                     buy_amount -= increment
@@ -62,6 +66,8 @@ class CornPricesGame:
                         increment = 1
         else:
             buy_amount = int(amount)
+            if buy_amount > market.supply:
+                return "buy amount high"
 
         total_price = market.get_transaction_price(buy_amount)
         if player.money < total_price:

@@ -8,17 +8,19 @@ class PlayerCommands(commands.Cog):
 
     @commands.command(aliases=["cp"])
     async def cornprices(self, ctx):
+        "Lists the prices of corn on the market"
         message = Embed(title="Corn Market", description="Prices based upon player interactions, updated every minute", color=0xffff0a)
         game = load_game()
         message.set_thumbnail(url="https://i.kym-cdn.com/entries/icons/mobile/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg")
 
         for corn_market_tag in game.corn_markets.keys():
             corn_market = game.corn_markets[corn_market_tag]
-            message.add_field(name=corn_market.name, value=corn_market.generate_market_listing())
+            message.add_field(name=corn_market.name, value=corn_market.generate_market_listing(), inline=False)
         await ctx.send(embed=message)
 
     @commands.command(aliases=["w", "money", "m"])
     async def wallet(self, ctx):
+        "Displays your net worth"
         game = load_game()
         player = game.get_player(ctx.author.id)
 
@@ -37,12 +39,16 @@ class PlayerCommands(commands.Cog):
 
     @commands.command(aliases=["b"])
     async def buy(self, ctx, corn_type = "None", amount = 0):
+        "Usage: >buy corn-tag amount (leave amount blank to buy max)"
         game = load_game()
         transaction_result = game.do_buy_transaction(ctx.author.id, corn_type, amount)
 
         # no swtich statements in python
         if transaction_result == "invalid type":
             error_message = Embed(title="Transaction Failed", description="Please input a valid corn tag (type >cp in chat to view a list)")
+            await ctx.send(embed=error_message)
+        elif transaction_result == "no supply":
+            error_message = Embed(title="Transaction Failed", description="There is no more corn of that type avaliable, wait a bit for it to re-stock")
             await ctx.send(embed=error_message)
         elif transaction_result == "not number":
             error_message = Embed(title="Transaction Failed", description="Please input a valid number for the amount you want to buy")
@@ -52,6 +58,9 @@ class PlayerCommands(commands.Cog):
             await ctx.send(embed=error_message)
         elif transaction_result == "cant buy 1":
             error_message = Embed(title="Transaction Failed", description="You cant afford even a single cob of that type of corn!")
+            await ctx.send(embed=error_message)
+        elif transaction_result == "buy amount high":
+            error_message = Embed(title="Transaction Failed", description="The amount you asked for is more than the amount of corn on the market!")
             await ctx.send(embed=error_message)
         elif transaction_result == "cant buy amount":
             error_message = Embed(title="Transaction Failed", description="You cant afford that much corn, enter a lower amount")
@@ -65,6 +74,7 @@ class PlayerCommands(commands.Cog):
 
     @commands.command(aliases=["s"])
     async def sell(self, ctx, corn_type = "None", amount = 0):
+        "Usage: >sell corn-tag amount (leave amount blank to sell max)"
         game = load_game()
         transaction_result = game.do_sell_transaction(ctx.author.id, corn_type, amount)
         

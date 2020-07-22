@@ -41,3 +41,10 @@ class SweetCorn(Corn):
         self.demand = 2_970_357_521
         self.average_price = 4.75
 
+class GemCorn(Corn):
+    def __init__(self):
+        self.name = "Gem Corn"
+        self.tag = "gem-corn"
+        self.supply = 0
+        self.demand = 2_000_000
+        self.average_price = 10000
