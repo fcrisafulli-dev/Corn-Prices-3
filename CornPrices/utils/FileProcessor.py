@@ -15,6 +15,12 @@ def save_game(game_instance: CornPricesGame):
     with open(game_path, 'wb+') as game_file:
         pickle.dump(game_instance, game_file)
 
+def load_game():
+    game_path = __root / "storage" / "game" / f"game.cornprices"
+    with open(game_path, 'rb') as game_file:
+        game_class = pickle.load(game_file)
+    return game_class
+
 def check_environment():
     "Makes sure some important directories and files exist"
 
