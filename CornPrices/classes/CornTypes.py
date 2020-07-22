@@ -1,6 +1,7 @@
 class Corn:
     def __init__(self):
         self.name = "corn"
+        self.tag = "corn"
         self.supply = 0
         self.demand = 0
         self.average_price = 0
@@ -20,14 +21,15 @@ class Corn:
         percent = round (self.get_demand_percent(), 1)
 
         if percent > 0:
-            return f"Price: ${price} | Demand: +{percent}%"
+            return f"Price: ${price} | Demand: +{percent}% \nTag: {self.tag}"
         else:
-            return f"Price: ${price} | Demand: {percent}%"
+            return f"Price: ${price} | Demand: {percent}% \nTag: {self.tag}"
 
 class SweetCorn(Corn):
     def __init__(self):
         self.name = "Sweet Corn"
-        self.supply = 2_792_135_110
-        self.demand = 2_970_357_521
+        self.tag = "sweet-corn"
+        self.supply = 2100#2_792_135_110
+        self.demand = 2000#2_970_357_521
         self.average_price = 4.75
 
