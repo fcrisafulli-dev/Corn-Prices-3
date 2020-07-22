@@ -21,8 +21,8 @@ class PlayerCommands(commands.Cog):
         game = load_game()
         player = game.get_player(ctx.author.id)
 
-        message = Embed(title="Wallet")
-        message.add_field(name="Money", value = f"${player.money}")
+        message = Embed(title="Wallet", description=f"Net Worth: ${round(game.get_net_worth_of_player(player),2)}")
+        message.add_field(name="Money", value = f"${round(player.money,2)}")
 
         holdings_string = ""
         for corn_tag in player.corn_holdings.keys():
@@ -60,7 +60,26 @@ class PlayerCommands(commands.Cog):
 
         save_game(game)
 
+    @commands.command(aliases=["s"])
+    async def sell(self, ctx, corn_type = "None", amount = 0):
+        game = load_game()
+        transaction_result = game.do_sell_transaction(ctx.author.id, corn_type, amount)
         
+        # no swtich statements in python
+        if transaction_result == "invalid type":
+            error_message = Embed(title="Transaction Failed", description="Please input a valid corn tag (type >cp in chat to view a list)\n You also may not own any of that type of corn!")
+            await ctx.send(embed=error_message)
+        elif transaction_result == "not number":
+            error_message = Embed(title="Transaction Failed", description="Please input a valid number for the amount you want to sell")
+            await ctx.send(embed=error_message)
+        elif transaction_result == "below 0":
+            error_message = Embed(title="Transaction Failed", description="Please input a valid number above 0")
+            await ctx.send(embed=error_message)
+        else:
+            message = Embed(title="Transaction Success", description=transaction_result)
+            await ctx.send(embed=message)
+
+        save_game(game)
 
 
 def setup(bot):

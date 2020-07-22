@@ -12,9 +12,17 @@ class Corn:
     def get_demand_percent(self):
         return ((self.supply/self.demand) - 1) * -100
 
-
     def get_price(self):
         return self.average_price * self.get_price_change()
+
+    def predict_percent_change(self, amount):
+        original = self.get_price()
+        new = self.average_price * ((((self.supply+amount)/self.demand) - 2) * -1)
+
+        return ((new/original) - 2) * -1
+
+    def get_transaction_price(self, amount):
+        return self.average_price * amount * self.predict_percent_change(amount)
 
     def generate_market_listing(self):
         price = round(self.get_price(), 2)
