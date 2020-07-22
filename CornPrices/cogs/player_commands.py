@@ -8,8 +8,9 @@ class PlayerCommands(commands.Cog):
 
     @commands.command(aliases=["cp"])
     async def cornprices(self, ctx):
-        message = Embed(title="Corn Market", description="Prices based upon player interactions, updated every minute")
+        message = Embed(title="Corn Market", description="Prices based upon player interactions, updated every minute", color=0xffff0a)
         game = load_game()
+        message.set_thumbnail(url="https://i.kym-cdn.com/entries/icons/mobile/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg")
 
         for corn_market_tag in game.corn_markets.keys():
             corn_market = game.corn_markets[corn_market_tag]
@@ -21,7 +22,7 @@ class PlayerCommands(commands.Cog):
         game = load_game()
         player = game.get_player(ctx.author.id)
 
-        message = Embed(title="Wallet", description=f"Net Worth: ${round(game.get_net_worth_of_player(player),2)}")
+        message = Embed(title="", description=f"Net Worth: ${round(game.get_net_worth_of_player(player),2)}",color=0xffad0a)
         message.add_field(name="Money", value = f"${round(player.money,2)}")
 
         holdings_string = ""
@@ -31,6 +32,7 @@ class PlayerCommands(commands.Cog):
         if len(holdings_string) > 0:
             message.add_field(name="Corn Holdings", value = holdings_string,inline=False)
 
+        message.set_author(name=f"{ctx.message.author.name}'s wallet", icon_url=ctx.message.author.avatar_url)
         await ctx.send(embed=message)
 
     @commands.command(aliases=["b"])
@@ -55,7 +57,8 @@ class PlayerCommands(commands.Cog):
             error_message = Embed(title="Transaction Failed", description="You cant afford that much corn, enter a lower amount")
             await ctx.send(embed=error_message)
         else:
-            message = Embed(title="Transaction Success", description=transaction_result)
+            message = Embed(title="Transaction Success", description=transaction_result, color=0x00ff00)
+            message.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
             await ctx.send(embed=message)
 
         save_game(game)
@@ -76,7 +79,8 @@ class PlayerCommands(commands.Cog):
             error_message = Embed(title="Transaction Failed", description="Please input a valid number above 0")
             await ctx.send(embed=error_message)
         else:
-            message = Embed(title="Transaction Success", description=transaction_result)
+            message = Embed(title="Transaction Success", description=transaction_result,color=0x00ff00)
+            message.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
             await ctx.send(embed=message)
 
         save_game(game)

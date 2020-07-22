@@ -1,6 +1,7 @@
 from CornPrices.classes.CornTypes import SweetCorn
 from CornPrices.classes.Player import Player
 
+
 class CornPricesGame:
     def __init__(self):
         self.players = {}  # stores player instances 
@@ -101,7 +102,4 @@ class CornPricesGame:
         player.subtract_corn(corn_tag, sell_amount)
 
         return f"Sold {sell_amount} {market.name} for ${round(total_price,2)}"
-
-
-        
 
