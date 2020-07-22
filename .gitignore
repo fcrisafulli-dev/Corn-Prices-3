@@ -1,4 +1,7 @@
-.venv*
+venv*
+.vscode
+game/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
