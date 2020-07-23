@@ -8,6 +8,7 @@ class CornPricesApp:
     bot = commands.Bot(command_prefix='>')
 
     bot.load_extension("CornPrices.cogs.player_commands")
+    bot.load_extension("CornPrices.cogs.administrator_commands")
 
     def run(self, secret):
         self.bot.loop.create_task(manage_market(self.bot))

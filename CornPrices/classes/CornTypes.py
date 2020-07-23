@@ -91,8 +91,7 @@ class GemCorn(Corn):
         demand = self.get_demand_percent()
         if demand < 25:
             amount_change = uniform(.02,.04) * self.demand
-            if demand > 0:
-                self.supply -= amount_change
+            self.supply -= amount_change
         else:
             amount_change = uniform(-.02,.02) * self.demand
             self.supply += amount_change
