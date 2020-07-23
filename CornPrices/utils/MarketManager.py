@@ -17,6 +17,6 @@ async def manage_market(bot):
             market.update_supply()
 
         save_game(game)
-        await asyncio.sleep(2)
-        await bot.change_presence(activity=Streaming(name="fresh corn prices", url="https://images-ext-2.discordapp.net/external/amuYA__rRHx932sbBXdu4RzVsOwNgqPMte7gBV-zOow/https/i.kym-cdn.com/entries/icons/mobile/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg"))
         await asyncio.sleep(5)
+        await bot.change_presence(activity=Streaming(name="fresh corn prices", url="https://images-ext-2.discordapp.net/external/amuYA__rRHx932sbBXdu4RzVsOwNgqPMte7gBV-zOow/https/i.kym-cdn.com/entries/icons/mobile/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg"))
+        await asyncio.sleep(55)
