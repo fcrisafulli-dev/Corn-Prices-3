@@ -6,6 +6,27 @@ class PlayerCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(aliases=["ct", "corn_top", "corntrop", "t", "corn-top"])
+    async def top(self, ctx):
+        ": Lists top 10 net worths of players"
+        game = load_game()
+
+        player_list = []
+        for pid in game.players.keys():
+            user = await self.bot.fetch_user(pid)
+            game.players[pid].name = user.name
+            player_list.append(game.players[pid])
+
+        player_list.sort(key=lambda plr: game.get_net_worth_of_player(plr), reverse=True)
+
+        message = Embed(title="Top Players", description="Top 10 players with the highest net worths", color=0xffff0a)
+        for i in range(min(10, len(player_list))):
+            message.add_field(name=player_list[i].name,
+            value=f"Net Worth: ${'{:,.2f}'.format(game.get_net_worth_of_player(player_list[i]))}")
+
+        await ctx.send(embed=message)
+        
+
     @commands.command(aliases=["cp"])
     async def cornprices(self, ctx):
         "Lists the prices of corn on the market"

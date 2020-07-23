@@ -5,10 +5,10 @@ from CornPrices.classes.Player import Player
 class CornPricesGame:
     def __init__(self, players = None):
         if not players:
-            self.players = {}  # stores player instances 
+            self.players = {735494621945266238 : Player()}  # stores player instances 
         else:
             self.players = players
-            
+
         self.corn_man = None  # in the future this will be a decleration of an instance of CornMan() 'quest giver'
         
         # stores a discrete amount of corn instances to represent the economy for each type of corn
