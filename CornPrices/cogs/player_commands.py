@@ -22,7 +22,7 @@ class PlayerCommands(commands.Cog):
         message = Embed(title="Top Players", description="Top 10 players with the highest net worths", color=0xffff0a)
         for i in range(min(10, len(player_list))):
             message.add_field(name=player_list[i].name,
-            value=f"Net Worth: ${'{:,.2f}'.format(game.get_net_worth_of_player(player_list[i]))}")
+            value=f"Net Worth: ${'{:,.2f}'.format(game.get_net_worth_of_player(player_list[i]))}",inline=False)
 
         await ctx.send(embed=message)
         
