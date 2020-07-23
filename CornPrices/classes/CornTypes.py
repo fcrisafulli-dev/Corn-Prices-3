@@ -47,6 +47,7 @@ class Corn:
             amount_change = uniform(-.052,.052) * self.demand
             self.supply += amount_change
 
+
 class SweetCorn(Corn):
     def __init__(self):
         self.name = "Sweet Corn"
@@ -54,6 +55,7 @@ class SweetCorn(Corn):
         self.supply = 1_792_135_110
         self.demand = 1_970_357_521
         self.average_price = 4.75
+
 
 class FunkyCorn(Corn):
     def __init__(self):
@@ -63,20 +65,22 @@ class FunkyCorn(Corn):
         self.demand = 900_000_000
         self.average_price = 15.43
 
+        self.climb = "supply"
+
     def update_supply(self):
         demand = self.get_demand_percent()
-        if abs(demand) > 70:
-            amount_change = uniform(.01,.10) * self.demand
-            if demand > 0:
-                self.supply += amount_change
-            else:
-                self.supply -= amount_change
-        else:
-            if uniform(0,100) < 30:
-                self.supply = uniform(900_000_000,900_000_000*1.7)
-            else:
-                self.supply = uniform(900_000_000,900_000_000*0.3)
 
+        if self.climb == "supply":  # decreases demand
+            amount_change = uniform(.01,.04) * self.demand
+            self.supply += amount_change
+            if self.supply > self.demand and uniform(0,100) < 10:
+                self.climb = "demand"
+
+        elif self.climb == "demand":
+            amount_change = uniform(.03,.15) * self.demand
+            self.supply -= amount_change
+            if self.supply < self.demand and uniform(0,100) < 40:
+                self.climb = "supply"
 
 
 class GemCorn(Corn):
@@ -90,8 +94,11 @@ class GemCorn(Corn):
     def update_supply(self):
         demand = self.get_demand_percent()
         if demand < 25:
-            amount_change = uniform(.02,.04) * self.demand
+            amount_change = uniform(-.02,.04) * self.demand
             self.supply -= amount_change
         else:
-            amount_change = uniform(-.02,.02) * self.demand
+            if uniform(0,100) < 10:
+                amount_change = uniform(.10,.30) * self.demand
+            else:
+                amount_change = uniform(-.02,.02) * self.demand
             self.supply += amount_change
