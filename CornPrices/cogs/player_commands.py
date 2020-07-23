@@ -24,8 +24,8 @@ class PlayerCommands(commands.Cog):
         game = load_game()
         player = game.get_player(ctx.author.id)
 
-        message = Embed(title="", description=f"Net Worth: ${round(game.get_net_worth_of_player(player),2)}",color=0xffad0a)
-        message.add_field(name="Money", value = f"${round(player.money,2)}")
+        message = Embed(title="", description=f"Net Worth: ${'{:,.2f}'.format(game.get_net_worth_of_player(player))}",color=0xffad0a)
+        message.add_field(name="Money", value = f"${'{:,.2f}'.format(player.money)}")
 
         holdings_string = ""
         for corn_tag in player.corn_holdings.keys():
@@ -94,6 +94,28 @@ class PlayerCommands(commands.Cog):
             await ctx.send(embed=message)
 
         save_game(game)
+
+    @commands.command(aliases=["i"])
+    async def info(self, ctx, corn_type = "None"):
+        game = load_game()
+
+        corn_tag = corn_type.lower()
+        if corn_tag not in game.corn_markets.keys():
+            error_message = Embed(title="Cannot Display Info", 
+                description="Please input a valid corn tag (type >cp in chat to view a list)")
+            await ctx.send(embed=error_message)
+            return
+
+        market = game.corn_markets[corn_tag]
+
+        buyout = market.get_transaction_price(market.supply)
+
+        message = Embed(title=f"Information on {market.name}", 
+            description=f"Buyout value: ${'{:,.2f}'.format(buyout)}\nStable average price: ${market.average_price}",
+            color=0x0000ff)
+        await ctx.send(embed=message)
+
+
 
 
 def setup(bot):

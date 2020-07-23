@@ -1,4 +1,4 @@
-from CornPrices.classes.CornTypes import SweetCorn, GemCorn
+from CornPrices.classes.CornTypes import SweetCorn, FunkyCorn, GemCorn
 from CornPrices.classes.Player import Player
 
 
@@ -10,6 +10,7 @@ class CornPricesGame:
         # stores a discrete amount of corn instances to represent the economy for each type of corn
         self.corn_markets = {
             "sweet-corn" : SweetCorn(),
+            "funky-corn" : FunkyCorn(),
             "gem-corn" : GemCorn()
             }
 
