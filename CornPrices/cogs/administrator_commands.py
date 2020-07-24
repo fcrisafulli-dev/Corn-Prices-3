@@ -23,6 +23,17 @@ class AdminCommands(commands.Cog):
         message = Embed(title="Updated Market", description="Wallets are saved, Corn Market Updated", color=0x0000ff)
         await ctx.send(embed=message)
 
+    @commands.command()
+    async def get_price(self, ctx, corn_tag=None):
+        "Used to get price of one corn, only for bot admins"
+        if ctx.author.id not in self.__admins or not corn_tag:
+            return
+
+        game = load_game()
+        price = game.corn_markets[corn_tag].get_transaction_price(1)
+        message = Embed(title="Listing Price of one", description=f"${round(price,2)}", color=0x0000ff)
+        await ctx.send(embed=message)
+
 
 def setup(bot):
     """setup"""

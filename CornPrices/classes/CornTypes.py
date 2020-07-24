@@ -8,7 +8,7 @@ class Corn:
         self.demand = 0
         self.average_price = 0
 
-        self.history_data = [0 for i in range(60)]
+        self.history_data = [0 for i in range(120)]
         self.display_color = "black"
 
     def get_price_change(self):
@@ -23,11 +23,10 @@ class Corn:
     def predict_percent_change(self, amount):
         original = self.get_price()
         new = self.average_price * ((((self.supply+amount)/self.demand) - 2) * -1)
-
         return ((new/original) - 2) * -1
 
     def get_transaction_price(self, amount):
-        return self.average_price * amount * self.predict_percent_change(amount)
+        return self.get_price() * amount * self.predict_percent_change(amount)
 
     def generate_market_listing(self):
         price = round(self.get_price(), 2)
@@ -40,7 +39,7 @@ class Corn:
 
     def update_history(self):
         self.history_data.append(self.get_demand_percent())
-        self.history_data = self.history_data[-60:]
+        self.history_data = self.history_data[-120:]
 
     def update_supply(self):
         demand = self.get_demand_percent()
@@ -72,7 +71,7 @@ class FunkyCorn(Corn):
         super().__init__()
         self.name = "Funky Corn"
         self.tag = "funky-corn"
-        self.supply = 0
+        self.supply = 900_000_000
         self.demand = 900_000_000
         self.average_price = 15.43
 
@@ -106,7 +105,7 @@ class GemCorn(Corn):
         super().__init__()
         self.name = "Gem Corn"
         self.tag = "gem-corn"
-        self.supply = 4_000_000
+        self.supply = 2_000_000
         self.demand = 2_000_000
         self.average_price = 9000.05
 
@@ -122,4 +121,27 @@ class GemCorn(Corn):
                 amount_change = uniform(.10,.30) * self.demand
             else:
                 amount_change = uniform(-.02,.02) * self.demand
+            self.supply += amount_change
+
+
+class GalaxyCorn(Corn):
+    def __init__(self):
+        super().__init__()
+        self.name = "Galaxy Corn"
+        self.tag = "galaxy-corn"
+        self.supply = 1_000_000_000
+        self.demand = 1_000_000_000
+        self.average_price = 5.8
+
+        self.display_color = "magenta"
+
+        self.plateau = 0
+
+    def update_supply(self):
+        demand = self.get_demand_percent()
+
+        if uniform(0,100) < 2.5:
+            self.supply = uniform(0, 2_000_000_000)
+        else:
+            amount_change = uniform(-.01,.01) * self.demand
             self.supply += amount_change

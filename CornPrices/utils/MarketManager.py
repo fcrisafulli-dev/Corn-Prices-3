@@ -12,7 +12,7 @@ async def manage_market(bot):
 
     print("Starting loop")
 
-    reverse = [(60-i)*-1 for i in range(60)]
+    reverse = [(60-(i/2))*-1 for i in range(120)]
 
     while not bot.is_closed():
         game = load_game()
@@ -32,4 +32,4 @@ async def manage_market(bot):
         plt.legend(loc=3)
         save_game(game)
         save_plot(plt)
-        await asyncio.sleep(10)
+        await asyncio.sleep(60)

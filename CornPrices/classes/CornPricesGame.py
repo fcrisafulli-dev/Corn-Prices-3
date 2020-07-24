@@ -1,4 +1,4 @@
-from CornPrices.classes.CornTypes import SweetCorn, FunkyCorn, GemCorn
+from CornPrices.classes.CornTypes import SweetCorn, FunkyCorn, GemCorn, GalaxyCorn
 from CornPrices.classes.Player import Player
 
 
@@ -15,7 +15,8 @@ class CornPricesGame:
         self.corn_markets = {
             "sweet-corn" : SweetCorn(),
             "funky-corn" : FunkyCorn(),
-            "gem-corn" : GemCorn()
+            "gem-corn" : GemCorn(),
+            "galaxy-corn" : GalaxyCorn()
             }
 
     def get_player(self, pid):
