@@ -32,4 +32,4 @@ async def manage_market(bot):
         plt.legend(loc=3)
         save_game(game)
         save_plot(plt)
-        await asyncio.sleep(60)
+        await asyncio.sleep(30)
