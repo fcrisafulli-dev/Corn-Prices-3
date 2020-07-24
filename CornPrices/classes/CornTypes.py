@@ -111,14 +111,18 @@ class GemCorn(Corn):
 
         self.display_color = "dodgerblue"
 
+        self.line = 25
+
     def update_supply(self):
         demand = self.get_demand_percent()
-        if demand < 25:
+        if demand < self.line:
             amount_change = uniform(-.02,.04) * self.demand
             self.supply -= amount_change
         else:
-            if uniform(0,100) < 10:
-                amount_change = uniform(.10,.30) * self.demand
+            if uniform(0,100) < 1:
+                amount_change = uniform(.20,.40) * self.demand
+                if uniform(0,100) < 10:
+                    self.line = uniform(4,40)
             else:
                 amount_change = uniform(-.02,.02) * self.demand
             self.supply += amount_change
