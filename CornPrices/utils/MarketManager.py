@@ -1,6 +1,10 @@
 import asyncio
 from CornPrices.utils.FileProcessor import load_game, save_game
 from discord import Streaming
+import matplotlib.pyplot as plt
+from CornPrices.utils.FileProcessor import save_plot
+
+
 
 async def manage_market(bot):
     
@@ -8,15 +12,24 @@ async def manage_market(bot):
 
     print("Starting loop")
 
+    reverse = [(60-i)*-1 for i in range(60)]
+
     while not bot.is_closed():
-        await bot.change_presence(activity=Streaming(name="gathering corn prices", url="https://images-ext-2.discordapp.net/external/amuYA__rRHx932sbBXdu4RzVsOwNgqPMte7gBV-zOow/https/i.kym-cdn.com/entries/icons/mobile/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg"))
         game = load_game()
+
+        plt.clf()
+        #plt.style.use('seaborn-darkgrid')
+        plt.style.use('dark_background')
+        plt.xlabel("Minutes ago")
+        plt.ylabel("Demand")
 
         for corn_tag in game.corn_markets.keys():
             market = game.corn_markets[corn_tag]
             market.update_supply()
-
+            market.update_history() 
+            plt.plot(reverse, market.history_data, color=market.display_color, label=market.name)
+            
+        plt.legend(loc=3)
         save_game(game)
-        await asyncio.sleep(5)
-        await bot.change_presence(activity=Streaming(name="fresh corn prices", url="https://images-ext-2.discordapp.net/external/amuYA__rRHx932sbBXdu4RzVsOwNgqPMte7gBV-zOow/https/i.kym-cdn.com/entries/icons/mobile/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg"))
-        await asyncio.sleep(55)
+        save_plot(plt)
+        await asyncio.sleep(10)

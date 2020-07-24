@@ -1,6 +1,6 @@
 from discord.ext import commands
 from discord import Embed
-from CornPrices.utils.FileProcessor import load_game, save_game
+from CornPrices.utils.FileProcessor import load_game, save_game, get_plot_file
 
 class PlayerCommands(commands.Cog):
     def __init__(self, bot):
@@ -37,7 +37,9 @@ class PlayerCommands(commands.Cog):
         for corn_market_tag in game.corn_markets.keys():
             corn_market = game.corn_markets[corn_market_tag]
             message.add_field(name=corn_market.name, value=corn_market.generate_market_listing(), inline=False)
-        await ctx.send(embed=message)
+
+        message.set_image(url="attachment://historical_data.png")
+        await ctx.send(file=get_plot_file(), embed=message)
 
     @commands.command(aliases=["w", "money", "m"])
     async def wallet(self, ctx):
