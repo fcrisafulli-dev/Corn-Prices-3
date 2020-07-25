@@ -138,6 +138,55 @@ class PlayerCommands(commands.Cog):
             color=0x0000ff)
         await ctx.send(embed=message)
 
+    @commands.command(aliases=["p"])
+    async def pay(self, ctx, Mention = "", amount = ""):
+        game = load_game()
+        try:
+            reciever = game.get_player(ctx.message.mentions[0].id)
+            sender = game.get_player(ctx.message.author.id)
+        except IndexError:
+            message = Embed(title=f"Transaction Failed", 
+            description=f"No mention was included, or the user is not in this server",
+            color=0xff0000)
+            await ctx.send(embed=message)
+            return
+
+        try:
+            dollars = float(amount)
+        except ValueError:
+            message = Embed(title=f"Transaction Failed", 
+            description=f"You must enter an amount greater than 0",
+            color=0xff0000)
+            await ctx.send(embed=message)
+            return
+
+        if dollars <= 0:
+            message = Embed(title=f"Transaction Failed", 
+            description=f"You must enter an amount greater than 0",
+            color=0xff0000)
+            await ctx.send(embed=message)
+            return
+
+        if dollars > sender.money:
+            message = Embed(title=f"Transaction Failed", 
+            description=f"You do not have that much money!",
+            color=0xff0000)
+            await ctx.send(embed=message)
+            return
+
+
+        sender.money -= dollars
+        reciever.money += dollars
+
+        save_game(game)
+
+        message = Embed(title=f"Transaction Completed", 
+            description=f"{ctx.message.author.name} sent {ctx.message.mentions[0].name} ${'{:,.2f}'.format(dollars)}",
+            color=0x00ff00)
+        await ctx.send(embed=message)
+
+     
+
 
 
 
