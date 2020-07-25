@@ -34,6 +34,24 @@ class AdminCommands(commands.Cog):
         message = Embed(title="Listing Price of one", description=f"${round(price,2)}", color=0x0000ff)
         await ctx.send(embed=message)
 
+    @commands.command()
+    async def cycle(self, ctx):
+        if ctx.author.id not in self.__admins:
+            return
+
+        game = load_game()
+        message = Embed(title="Running Cycle", description="Please wait one moment . . .", color=0x000088)
+        await ctx.send(embed=message)
+
+        for i in range(120):
+            for corn_tag in game.corn_markets.keys():
+                market = game.corn_markets[corn_tag]
+                market.update_supply()
+                market.update_history() 
+
+        message = Embed(title="Completed Cycle", description="Corn Market Updated", color=0x0000ff)
+        await ctx.send(embed=message)
+        save_game(game)
 
 def setup(bot):
     """setup"""
